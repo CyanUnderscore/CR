@@ -1,4 +1,5 @@
 # CR (Compile and Run) //only work in linux
+### Dumb but it save some time
  a simple bash script tu compile and run assembly code
  
  for it to work you need to put the CR file in your directory and run :  
