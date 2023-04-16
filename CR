@@ -1,10 +1,9 @@
 #!/bin/bash
 
 echo "compiling ..."
-echo "Sucess"
 nasm -f elf64 -o main.o $1
-echo "creating a executable ..."
-echo "Sucess"
+echo "creating an executable ..."
 ld -s -o main main.o
+rm main.o #it don't have any use anymore
 echo "running ..."
 ./main
