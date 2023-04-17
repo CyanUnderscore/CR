@@ -1,16 +1,59 @@
 section .data
-    msg db 'Hello, world!',0
+    message db 'Entrez le mot de passe :',0
+    pass db 'azerty',0
+    correct_msg db 'Mot de passe correct',0
+    incorrect_msg db 'Mot de passe incorrect',0
+
+section .bss
+    buffer resb 10
 
 section .text
     global _start
 
 _start:
-    mov eax,4       ; la fonction système 4 correspond à l'affichage sur la console
-    mov ebx,1       ; le descripteur de fichier 1 correspond à la sortie standard (STDOUT)
-    mov ecx,msg     ; la chaîne de caractères à afficher
-    mov edx,13      ; le nombre de caractères à afficher
-    int 0x80        ; appeler le noyau pour exécuter la fonction système
+    ; Affichage du message
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, message
+    mov edx, 23
+    int 0x80
 
-    mov eax,1       ; la fonction système 1 correspond à l'arrêt du programme
-    xor ebx,ebx     ; retourner 0 (EXIT_SUCCESS)
-    int 0x80        ; appeler le noyau pour exécuter la fonction système
+    ; Lecture de l'entrée utilisateur
+    mov eax, 3
+    mov ebx, 2
+    mov ecx, buffer
+    mov edx, 10
+    int 0x80
+
+    ; Comparaison avec le mot de passe
+    mov edi, buffer
+    mov esi, pass
+    mov ecx, 6
+    repe cmpsb
+    jne wrong_pass
+
+    ; Mot de passe correct
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, correct_msg
+    mov edx, 20
+    int 0x80
+
+    ; Sortie du programme
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
+
+wrong_pass:
+    ; Mot de passe incorrect
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, incorrect_msg
+    mov edx, 22
+    int 0x80
+
+    ; Sortie du programme
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
+
